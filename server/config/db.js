@@ -29,7 +29,7 @@ if (process.env.DATABASE_URL) {
   });
 } else {
   sequelize = new Sequelize(
-    process.env.DB_NAME || "sys",
+    process.env.DB_NAME || "test",
     process.env.DB_USER,
     process.env.DB_PASSWORD,
     {

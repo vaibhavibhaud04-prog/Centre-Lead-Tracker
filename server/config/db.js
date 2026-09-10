@@ -12,12 +12,14 @@ const poolConfig = {
 
 const dialectOptions = {
   connectTimeout: 60000,
-  ...(process.env.DB_SSL === "false" ? {} : {
-    ssl: {
-      minVersion: "TLSv1.2",
-      rejectUnauthorized: false
-    }
-  })
+  ...(process.env.DB_SSL === "false"
+    ? {}
+    : {
+        ssl: {
+          minVersion: "TLSv1.2",
+          rejectUnauthorized: false
+        }
+      })
 };
 
 if (process.env.DATABASE_URL) {
@@ -29,12 +31,12 @@ if (process.env.DATABASE_URL) {
   });
 } else {
   sequelize = new Sequelize(
-    process.env.DB_NAME || "test",
-    process.env.DB_USER,
-    process.env.DB_PASSWORD,
+    process.env.DB_NAME || "centre_lead_tracker",
+    process.env.DB_USER || "root",
+    process.env.DB_PASSWORD || "root",
     {
-      host: process.env.DB_HOST,
-      port: Number(process.env.DB_PORT) || 4000,
+      host: process.env.DB_HOST || "localhost",
+      port: Number(process.env.DB_PORT) || 3306,
       dialect: "mysql",
       logging: false,
       pool: poolConfig,

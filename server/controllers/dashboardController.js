@@ -1,6 +1,5 @@
 const { Lead } = require("../models");
 const { Op } = require("sequelize");
-const { sequelize } = require("../models");
 
 const getDashboardStats = async (req, res) => {
   try {
@@ -48,6 +47,7 @@ const getDashboardStats = async (req, res) => {
 
   } catch (error) {
 
+    console.error(error);
     res.status(500).json({
       success: false,
       message: error.message,
@@ -88,6 +88,7 @@ const getStatusChart = async (req, res) => {
 
   } catch (error) {
 
+    console.error(error);
     res.status(500).json({
       success: false,
       message: error.message,

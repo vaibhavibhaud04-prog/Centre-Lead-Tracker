@@ -71,6 +71,7 @@ const Lead = sequelize.define(
     },
   },
   {
+    tableName: "lead",
     timestamps: true,
   }
 );

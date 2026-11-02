@@ -23,13 +23,17 @@ app.get("/", (req, res) => {
 sequelize.authenticate()
 .then(() => {
     console.log("Database Connected");
+    return sequelize.sync();
+})
+.then(() => {
+    console.log("Tables Synced");
 
     app.listen(PORT, () => {
         console.log(`Server running on port ${PORT}`);
     });
 })
 .catch((err) => {
-    console.error("Database Connection Failed:", err);
+    console.error("Database Setup Failed:", err);
 });
 
 app.use("/api/leads", leadRoutes);

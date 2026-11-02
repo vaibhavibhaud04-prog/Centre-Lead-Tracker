@@ -33,6 +33,7 @@ const FollowUp = sequelize.define(
     },
   },
   {
+    tableName: "followups",
     timestamps: true,
   }
 );

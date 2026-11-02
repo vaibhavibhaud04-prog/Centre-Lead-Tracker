@@ -24,14 +24,12 @@ sequelize.authenticate()
 .then(() => {
     console.log("Database Connected");
 
-    
-    return sequelize.sync({ alter: true });
-})
-.then(() => {
-    console.log("Tables Synced");
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
 })
 .catch((err) => {
-    console.log(err);
+    console.error("Database Connection Failed:", err);
 });
 
 app.use("/api/leads", leadRoutes);

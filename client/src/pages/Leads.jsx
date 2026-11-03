@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import api from "../services/api";
@@ -6,11 +7,15 @@ import LeadToolbar from "../components/LeadToolbar";
 import LeadFilters from "../components/LeadFilters";
 import LeadTable from "../components/LeadTable";
 import AddLeadModal from "../components/AddLeadModal";
+import FollowUpModal from "../components/FollowUpModal";
 
 function Leads() {
   const [open, setOpen] = useState(false);
   const [leads, setLeads] = useState([]);
   const [selectedLead, setSelectedLead] = useState(null);
+
+  const [followUpOpen, setFollowUpOpen] = useState(false);
+  const [followUpLead, setFollowUpLead] = useState(null);
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -39,14 +44,10 @@ function Leads() {
 
     try {
       await api.patch(`/leads/${id}/archive`);
-
       toast.success("Lead archived successfully");
-
       fetchLeads();
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Failed to archive lead"
-      );
+      toast.error(error.response?.data?.message || "Failed to archive lead");
     }
   };
 
@@ -57,20 +58,12 @@ function Leads() {
         responseType: "blob",
       });
 
-      const url = window.URL.createObjectURL(
-        new Blob([response.data])
-      );
-
+      const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
-
       link.href = url;
-
       link.setAttribute("download", "leads.csv");
-
       document.body.appendChild(link);
-
       link.click();
-
       link.remove();
 
       toast.success("CSV Downloaded");
@@ -96,7 +89,6 @@ function Leads() {
 
   return (
     <div className="space-y-6">
-
       <LeadToolbar
         onAdd={() => {
           setSelectedLead(null);
@@ -119,6 +111,10 @@ function Leads() {
           setOpen(true);
         }}
         onArchive={handleArchive}
+        onFollowUp={(lead) => {
+          setFollowUpLead(lead);
+          setFollowUpOpen(true);
+        }}
       />
 
       <AddLeadModal
@@ -129,6 +125,16 @@ function Leads() {
         }}
         refreshLeads={fetchLeads}
         lead={selectedLead}
+      />
+
+      <FollowUpModal
+        open={followUpOpen}
+        onClose={() => {
+          setFollowUpOpen(false);
+          setFollowUpLead(null);
+        }}
+        lead={followUpLead}
+        refreshLeads={fetchLeads}
       />
     </div>
   );
